@@ -269,6 +269,7 @@ if __FILE__ == $PROGRAM_NAME
       assert_equal Calendars, cal.class
     end
   end
+  
   describe 'check status' do  
     it 'is -1, -2, -3 status returned by cal.cal2jd()' do
       y, m, d = 0, 0, 0          
@@ -290,20 +291,37 @@ if __FILE__ == $PROGRAM_NAME
       assert_equal 2400000.5, cal.djm0      
       assert_equal -1, cal.cal2jd(nil, nil, nil)
       assert_equal 2400000.5, cal.djm0
-      # check bad year
+      
+      # check bad years
+      assert_equal -1, cal.cal2jd(-4800, nil, nil)
+      assert_equal 2400000.5, cal.djm0
       assert_equal -1, cal.cal2jd(-4800, m, d)
       assert_equal 2400000.5, cal.djm0
+      
       # check min year
       assert_equal -2, cal.cal2jd(-4799, m, d)
       assert_equal 2400000.5, cal.djm0
       
-      assert_equal -2, cal.cal2jd(y, nil, d)
+      # check month nils, below min, above max
+      assert_equal -2, cal.cal2jd(y)
       assert_equal 2400000.5, cal.djm0
-      assert_equal -2, cal.cal2jd(y, m, d)
+      assert_equal -2, cal.cal2jd(y, nil)
+      assert_equal 2400000.5, cal.djm0
+      assert_equal -2, cal.cal2jd(y, nil, d)
       assert_equal 2400000.5, cal.djm0
       assert_equal -2, cal.cal2jd(y, m, nil)
       assert_equal 2400000.5, cal.djm0
+      assert_equal -2, cal.cal2jd(y, m, d)
+      assert_equal 2400000.5, cal.djm0      
+      assert_equal -2, cal.cal2jd(y, 13)
+      assert_equal 2400000.5, cal.djm0
       assert_equal -2, cal.cal2jd(y, 13, d)
+      assert_equal 2400000.5, cal.djm0
+      assert_equal -2, cal.cal2jd(y, 13, nil)
+      assert_equal 2400000.5, cal.djm0
+      
+      # check day nils, below min, above max
+      assert_equal -3, cal.cal2jd(y, 2)
       assert_equal 2400000.5, cal.djm0
       assert_equal -3, cal.cal2jd(y, 2, nil)
       assert_equal 2400000.5, cal.djm0
@@ -311,17 +329,27 @@ if __FILE__ == $PROGRAM_NAME
       assert_equal 2400000.5, cal.djm0
       assert_equal -3, cal.cal2jd(y, 2, 32)
       assert_equal 2400000.5, cal.djm0
+      
+      # check leap year day
       assert_equal 0, cal.cal2jd(y, 2, 29)
       assert_equal 2400000.5, cal.djm0
-      # assert_equal 2400000.5, cal.djm0
-      # y, m, d = nil, nil, nil
-      # cal.cal2jd(y, m, d)
-      # assert_equal 2400000.5, cal.djm0
+      
+      # use a couple of good dates
+      assert_equal 0, cal.cal2jd(1996, 2, 10)
+      assert_equal 2400000.5, cal.djm0
+      assert_equal 0, cal.cal2jd(-2, 9, 21)
+      assert_equal 2400000.5, cal.djm0
     end
+  end  
+  
+  describe 'compare results with Ruby Date methods' do  
+    it 'is Date.parse("#{yyyy}-#{mm}-#{dd}").jd returned by cal2jd(yyyy, mm, dd)' do
+      y, m, d = 1996, 2, 10
+      cal = Calendars.new
+      cal.cal2jd(y,m,d)
+      require 'date'
+      ajd = Date.parse("#{y}-#{m}-#{d}").ajd      
+      assert_equal ajd, cal.djm0 + cal.djm
+    end    
   end
-  
-  # y, m, d = 1996, 2, 10
-  # puts c.cal2jd(y, m, d)
-  # puts c.djm0, c.djm
-  
 end
