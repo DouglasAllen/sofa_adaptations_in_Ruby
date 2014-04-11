@@ -1,0 +1,385 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x6b2012af, pid=2972, tid=7996
+#
+# JRE version: Java(TM) SE Runtime Environment (7.0_51-b13) (build 1.7.0_51-b13)
+# Java VM: Java HotSpot(TM) Client VM (24.51-b03 mixed mode, sharing windows-x86 )
+# Problematic frame:
+# C  [cal2jd.so+0x12af]
+#
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.sun.com/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00a1a800):  JavaThread "main" [_thread_in_native, id=7996, stack(0x00030000,0x00230000)]
+
+siginfo: ExceptionCode=0xc0000005, writing address 0x00000000
+
+Registers:
+EAX=0x40000000, EBX=0x0022e348, ECX=0x00000000, EDX=0x41424f80
+ESP=0x0022e240, EBP=0x0022e26c, ESI=0x6e4cf8b0, EDI=0x0022e2f0
+EIP=0x6b2012af, EFLAGS=0x00010246
+
+Top of Stack: (sp=0x0022e240)
+0x0022e240:   00000029 00000001 0022e300 0022e3b4
+0x0022e250:   000007c8 00000000 00000000 ffffed41
+0x0022e260:   00000000 0022e348 6e4cf8b0 0022e288
+0x0022e270:   6e4c9dc7 000007c8 00000003 00000015
+0x0022e280:   00000000 00000000 0022e2c8 6e4c9b85
+0x0022e290:   6e4c9950 0022e2b4 00000014 00000001
+0x0022e2a0:   0022e408 6b2011d8 00000004 0022e2bc
+0x0022e2b0:   6e9d5f63 003f6b60 0022e408 0022e2f0 
+
+Instructions: (pc=0x6b2012af)
+0x6b20128f:   29 c1 89 c8 89 45 e8 8b 45 e8 8b 55 08 8d 04 02
+0x6b20129f:   89 45 e4 8b 4d 14 b8 00 00 00 40 ba 80 4f 42 41
+0x6b2012af:   89 01 89 51 04 8b 55 e4 89 d0 c1 e0 03 01 d0 c1
+0x6b2012bf:   e0 03 01 d0 8d 0c 85 00 00 00 00 01 c8 c1 e0 02 
+
+
+Register to memory mapping:
+
+EAX=0x40000000 is an unknown value
+EBX=0x0022e348 is pointing into the stack for thread: 0x00a1a800
+ECX=0x00000000 is an unknown value
+EDX=0x41424f80 is an unknown value
+ESP=0x0022e240 is pointing into the stack for thread: 0x00a1a800
+EBP=0x0022e26c is pointing into the stack for thread: 0x00a1a800
+ESI=0x6e4cf8b0 is an unknown value
+EDI=0x0022e2f0 is pointing into the stack for thread: 0x00a1a800
+
+
+Stack: [0x00030000,0x00230000],  sp=0x0022e240,  free space=2040k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [cal2jd.so+0x12af]
+C  [jffi7586195733446923809.tmp+0x9dc7]
+C  [jffi7586195733446923809.tmp+0x9b85]
+C  [jffi7586195733446923809.tmp+0x76d9]
+C  [jffi7586195733446923809.tmp+0x7b27]
+j  com.kenai.jffi.Foreign.invokeArrayReturnInt(JJ[B)I+0
+j  com.kenai.jffi.Invoker.invokeInt(Lcom/kenai/jffi/CallContext;JLcom/kenai/jffi/HeapInvocationBuffer;)I+38
+j  com.kenai.jffi.Invoker.invokeInt(Lcom/kenai/jffi/Function;Lcom/kenai/jffi/HeapInvocationBuffer;)I+10
+j  org.jruby.ext.ffi.jffi.DefaultMethodFactory$Signed32Invoker.invoke(Lorg/jruby/runtime/ThreadContext;Lcom/kenai/jffi/Function;Lcom/kenai/jffi/HeapInvocationBuffer;)Lorg/jruby/runtime/builtin/IRubyObject;+6
+j  org.jruby.ext.ffi.jffi.BufferNativeInvoker.call(Lorg/jruby/runtime/ThreadContext;Lorg/jruby/runtime/builtin/IRubyObject;Lorg/jruby/RubyModule;Ljava/lang/String;[Lorg/jruby/runtime/builtin/IRubyObject;)Lorg/jruby/runtime/builtin/IRubyObject;+160
+j  org.jruby.ext.ffi.jffi.DefaultMethod.call(Lorg/jruby/runtime/ThreadContext;Lorg/jruby/runtime/builtin/IRubyObject;Lorg/jruby/RubyModule;Ljava/lang/String;[Lorg/jruby/runtime/builtin/IRubyObject;)Lorg/jruby/runtime/builtin/IRubyObject;+11
+j  org.jruby.runtime.callsite.CachingCallSite.cacheAndCall(Lorg/jruby/runtime/builtin/IRubyObject;Lorg/jruby/RubyClass;[Lorg/jruby/runtime/builtin/IRubyObject;Lorg/jruby/runtime/ThreadContext;Lorg/jruby/runtime/builtin/IRubyObject;)Lorg/jruby/runtime/builtin/IRubyObject;+57
+j  org.jruby.runtime.callsite.CachingCallSite.call(Lorg/jruby/runtime/ThreadContext;Lorg/jruby/runtime/builtin/IRubyObject;Lorg/jruby/runtime/builtin/IRubyObject;[Lorg/jruby/runtime/builtin/IRubyObject;)Lorg/jruby/runtime/builtin/IRubyObject;+50
+j  use_cal2jd_object.__file__(Luse_cal2jd_object;Lorg/jruby/runtime/ThreadContext;Lorg/jruby/runtime/builtin/IRubyObject;[Lorg/jruby/runtime/builtin/IRubyObject;Lorg/jruby/runtime/Block;)Lorg/jruby/runtime/builtin/IRubyObject;+118
+j  use_cal2jd_object.load(Lorg/jruby/runtime/ThreadContext;Lorg/jruby/runtime/builtin/IRubyObject;Z)Lorg/jruby/runtime/builtin/IRubyObject;+21
+j  org.jruby.Ruby.runScript(Lorg/jruby/ast/executable/Script;Z)Lorg/jruby/runtime/builtin/IRubyObject;+12
+j  org.jruby.Ruby.runScript(Lorg/jruby/ast/executable/Script;)Lorg/jruby/runtime/builtin/IRubyObject;+3
+j  org.jruby.Ruby.runNormally(Lorg/jruby/ast/Node;)Lorg/jruby/runtime/builtin/IRubyObject;+73
+j  org.jruby.Ruby.runFromMain(Ljava/io/InputStream;Ljava/lang/String;)V+320
+j  org.jruby.Main.doRunFromMain(Lorg/jruby/Ruby;Ljava/io/InputStream;Ljava/lang/String;)Lorg/jruby/Main$Status;+12
+j  org.jruby.Main.internalRun()Lorg/jruby/Main$Status;+234
+j  org.jruby.Main.run([Ljava/lang/String;)Lorg/jruby/Main$Status;+9
+j  org.jruby.Main.main([Ljava/lang/String;)V+35
+v  ~StubRoutines::call_stub
+V  [jvm.dll+0x13f35a]
+V  [jvm.dll+0x202c6e]
+V  [jvm.dll+0x13f3dd]
+V  [jvm.dll+0xc9945]
+V  [jvm.dll+0xd478b]
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  com.kenai.jffi.Foreign.invokeArrayReturnInt(JJ[B)I+0
+j  com.kenai.jffi.Invoker.invokeInt(Lcom/kenai/jffi/CallContext;JLcom/kenai/jffi/HeapInvocationBuffer;)I+38
+j  com.kenai.jffi.Invoker.invokeInt(Lcom/kenai/jffi/Function;Lcom/kenai/jffi/HeapInvocationBuffer;)I+10
+j  org.jruby.ext.ffi.jffi.DefaultMethodFactory$Signed32Invoker.invoke(Lorg/jruby/runtime/ThreadContext;Lcom/kenai/jffi/Function;Lcom/kenai/jffi/HeapInvocationBuffer;)Lorg/jruby/runtime/builtin/IRubyObject;+6
+j  org.jruby.ext.ffi.jffi.BufferNativeInvoker.call(Lorg/jruby/runtime/ThreadContext;Lorg/jruby/runtime/builtin/IRubyObject;Lorg/jruby/RubyModule;Ljava/lang/String;[Lorg/jruby/runtime/builtin/IRubyObject;)Lorg/jruby/runtime/builtin/IRubyObject;+160
+j  org.jruby.ext.ffi.jffi.DefaultMethod.call(Lorg/jruby/runtime/ThreadContext;Lorg/jruby/runtime/builtin/IRubyObject;Lorg/jruby/RubyModule;Ljava/lang/String;[Lorg/jruby/runtime/builtin/IRubyObject;)Lorg/jruby/runtime/builtin/IRubyObject;+11
+j  org.jruby.runtime.callsite.CachingCallSite.cacheAndCall(Lorg/jruby/runtime/builtin/IRubyObject;Lorg/jruby/RubyClass;[Lorg/jruby/runtime/builtin/IRubyObject;Lorg/jruby/runtime/ThreadContext;Lorg/jruby/runtime/builtin/IRubyObject;)Lorg/jruby/runtime/builtin/IRubyObject;+57
+j  org.jruby.runtime.callsite.CachingCallSite.call(Lorg/jruby/runtime/ThreadContext;Lorg/jruby/runtime/builtin/IRubyObject;Lorg/jruby/runtime/builtin/IRubyObject;[Lorg/jruby/runtime/builtin/IRubyObject;)Lorg/jruby/runtime/builtin/IRubyObject;+50
+j  use_cal2jd_object.__file__(Luse_cal2jd_object;Lorg/jruby/runtime/ThreadContext;Lorg/jruby/runtime/builtin/IRubyObject;[Lorg/jruby/runtime/builtin/IRubyObject;Lorg/jruby/runtime/Block;)Lorg/jruby/runtime/builtin/IRubyObject;+118
+j  use_cal2jd_object.load(Lorg/jruby/runtime/ThreadContext;Lorg/jruby/runtime/builtin/IRubyObject;Z)Lorg/jruby/runtime/builtin/IRubyObject;+21
+j  org.jruby.Ruby.runScript(Lorg/jruby/ast/executable/Script;Z)Lorg/jruby/runtime/builtin/IRubyObject;+12
+j  org.jruby.Ruby.runScript(Lorg/jruby/ast/executable/Script;)Lorg/jruby/runtime/builtin/IRubyObject;+3
+j  org.jruby.Ruby.runNormally(Lorg/jruby/ast/Node;)Lorg/jruby/runtime/builtin/IRubyObject;+73
+j  org.jruby.Ruby.runFromMain(Ljava/io/InputStream;Ljava/lang/String;)V+320
+j  org.jruby.Main.doRunFromMain(Lorg/jruby/Ruby;Ljava/io/InputStream;Ljava/lang/String;)Lorg/jruby/Main$Status;+12
+j  org.jruby.Main.internalRun()Lorg/jruby/Main$Status;+234
+j  org.jruby.Main.run([Ljava/lang/String;)Lorg/jruby/Main$Status;+9
+j  org.jruby.Main.main([Ljava/lang/String;)V+35
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x0410fc00 JavaThread "Ruby-0-JIT-2" daemon [_thread_blocked, id=6212, stack(0x04710000,0x04910000)]
+  0x04333000 JavaThread "Ruby-0-JIT-1" daemon [_thread_blocked, id=8760, stack(0x044f0000,0x046f0000)]
+  0x02c1a400 JavaThread "Service Thread" daemon [_thread_blocked, id=1320, stack(0x03ab0000,0x03cb0000)]
+  0x02c0c400 JavaThread "C1 CompilerThread0" daemon [_thread_blocked, id=9636, stack(0x038b0000,0x03ab0000)]
+  0x02c0ac00 JavaThread "Attach Listener" daemon [_thread_blocked, id=7584, stack(0x036b0000,0x038b0000)]
+  0x02c09400 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=3864, stack(0x034b0000,0x036b0000)]
+  0x02ba1000 JavaThread "Finalizer" daemon [_thread_blocked, id=7336, stack(0x032b0000,0x034b0000)]
+  0x02b9c000 JavaThread "Reference Handler" daemon [_thread_blocked, id=6432, stack(0x030b0000,0x032b0000)]
+=>0x00a1a800 JavaThread "main" [_thread_in_native, id=7996, stack(0x00030000,0x00230000)]
+
+Other Threads:
+  0x02b9a800 VMThread [stack: 0x02eb0000,0x030b0000] [id=4228]
+  0x02c2e000 WatcherThread [stack: 0x03cb0000,0x03eb0000] [id=8716]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ def new generation   total 4928K, used 3891K [0x13630000, 0x13b80000, 0x1dcd0000)
+  eden space 4416K,  76% used [0x13630000, 0x1397ce90, 0x13a80000)
+  from space 512K, 100% used [0x13a80000, 0x13b00000, 0x13b00000)
+  to   space 512K,   0% used [0x13b00000, 0x13b00000, 0x13b80000)
+ tenured generation   total 10944K, used 7674K [0x1dcd0000, 0x1e780000, 0x32a30000)
+   the space 10944K,  70% used [0x1dcd0000, 0x1e44e9a0, 0x1e44ea00, 0x1e780000)
+ compacting perm gen  total 13312K, used 13256K [0x32a30000, 0x33730000, 0x36a30000)
+   the space 13312K,  99% used [0x32a30000, 0x33722248, 0x33722400, 0x33730000)
+    ro space 10240K,  44% used [0x36a30000, 0x36ea7e30, 0x36ea8000, 0x37430000)
+    rw space 12288K,  52% used [0x37430000, 0x37a7eb58, 0x37a7ec00, 0x38030000)
+
+Card table byte_map: [0x02c80000,0x02db0000] byte_map_base: 0x02be4e80
+
+Polling page: 0x00ad0000
+
+Code Cache  [0x00b00000, 0x00d08000, 0x02b00000)
+ total_blobs=1287 nmethods=1030 adapters=193 free_code_cache=30714Kb largest_free_block=31450944
+
+Compilation events (10 events):
+Event: 5.865 Thread 0x02c0c400 1029             org.jruby.runtime.ThreadContext::pushCallFrame (51 bytes)
+Event: 5.866 Thread 0x02c0c400 nmethod 1029 0x00d00348 code [0x00d00460, 0x00d00614]
+Event: 5.866 Thread 0x02c0c400 1030             org.jruby.runtime.Frame::updateFrame (56 bytes)
+Event: 5.867 Thread 0x02c0c400 nmethod 1030 0x00d007c8 code [0x00d008c0, 0x00d009a0]
+Event: 5.868 Thread 0x02c0c400 1031             org.jruby.Ruby::getObject (5 bytes)
+Event: 5.868 Thread 0x02c0c400 nmethod 1031 0x00d00a08 code [0x00d00b00, 0x00d00b80]
+Event: 5.897 Thread 0x02c0c400 1032             java.lang.AbstractStringBuilder::append (144 bytes)
+Event: 5.899 Thread 0x02c0c400 nmethod 1032 0x00d00bc8 code [0x00d00d80, 0x00d01188]
+Event: 5.900 Thread 0x02c0c400 1033             org.jruby.org.objectweb.asm.Item::<init> (66 bytes)
+Event: 5.901 Thread 0x02c0c400 nmethod 1033 0x00d01688 code [0x00d01780, 0x00d01860]
+
+GC Heap History (10 events):
+Event: 2.387 GC heap before
+{Heap before GC invocations=1 (full 0):
+ def new generation   total 4928K, used 4928K [0x13630000, 0x13b80000, 0x1dcd0000)
+  eden space 4416K, 100% used [0x13630000, 0x13a80000, 0x13a80000)
+  from space 512K, 100% used [0x13b00000, 0x13b80000, 0x13b80000)
+  to   space 512K,   0% used [0x13a80000, 0x13a80000, 0x13b00000)
+ tenured generation   total 10944K, used 1109K [0x1dcd0000, 0x1e780000, 0x32a30000)
+   the space 10944K,  10% used [0x1dcd0000, 0x1dde5498, 0x1dde5600, 0x1e780000)
+ compacting perm gen  total 12288K, used 9235K [0x32a30000, 0x33630000, 0x36a30000)
+   the space 12288K,  75% used [0x32a30000, 0x33334ee0, 0x33335000, 0x33630000)
+    ro space 10240K,  44% used [0x36a30000, 0x36ea7e30, 0x36ea8000, 0x37430000)
+    rw space 12288K,  52% used [0x37430000, 0x37a7eb58, 0x37a7ec00, 0x38030000)
+Event: 2.433 GC heap after
+Heap after GC invocations=2 (full 0):
+ def new generation   total 4928K, used 512K [0x13630000, 0x13b80000, 0x1dcd0000)
+  eden space 4416K,   0% used [0x13630000, 0x13630000, 0x13a80000)
+  from space 512K, 100% used [0x13a80000, 0x13b00000, 0x13b00000)
+  to   space 512K,   0% used [0x13b00000, 0x13b00000, 0x13b80000)
+ tenured generation   total 10944K, used 2425K [0x1dcd0000, 0x1e780000, 0x32a30000)
+   the space 10944K,  22% used [0x1dcd0000, 0x1df2e6d8, 0x1df2e800, 0x1e780000)
+ compacting perm gen  total 12288K, used 9235K [0x32a30000, 0x33630000, 0x36a30000)
+   the space 12288K,  75% used [0x32a30000, 0x33334ee0, 0x33335000, 0x33630000)
+    ro space 10240K,  44% used [0x36a30000, 0x36ea7e30, 0x36ea8000, 0x37430000)
+    rw space 12288K,  52% used [0x37430000, 0x37a7eb58, 0x37a7ec00, 0x38030000)
+}
+Event: 3.100 GC heap before
+{Heap before GC invocations=2 (full 0):
+ def new generation   total 4928K, used 4928K [0x13630000, 0x13b80000, 0x1dcd0000)
+  eden space 4416K, 100% used [0x13630000, 0x13a80000, 0x13a80000)
+  from space 512K, 100% used [0x13a80000, 0x13b00000, 0x13b00000)
+  to   space 512K,   0% used [0x13b00000, 0x13b00000, 0x13b80000)
+ tenured generation   total 10944K, used 2425K [0x1dcd0000, 0x1e780000, 0x32a30000)
+   the space 10944K,  22% used [0x1dcd0000, 0x1df2e6d8, 0x1df2e800, 0x1e780000)
+ compacting perm gen  total 12288K, used 9716K [0x32a30000, 0x33630000, 0x36a30000)
+   the space 12288K,  79% used [0x32a30000, 0x333ad238, 0x333ad400, 0x33630000)
+    ro space 10240K,  44% used [0x36a30000, 0x36ea7e30, 0x36ea8000, 0x37430000)
+    rw space 12288K,  52% used [0x37430000, 0x37a7eb58, 0x37a7ec00, 0x38030000)
+Event: 3.150 GC heap after
+Heap after GC invocations=3 (full 0):
+ def new generation   total 4928K, used 512K [0x13630000, 0x13b80000, 0x1dcd0000)
+  eden space 4416K,   0% used [0x13630000, 0x13630000, 0x13a80000)
+  from space 512K, 100% used [0x13b00000, 0x13b80000, 0x13b80000)
+  to   space 512K,   0% used [0x13a80000, 0x13a80000, 0x13b00000)
+ tenured generation   total 10944K, used 4072K [0x1dcd0000, 0x1e780000, 0x32a30000)
+   the space 10944K,  37% used [0x1dcd0000, 0x1e0ca0a8, 0x1e0ca200, 0x1e780000)
+ compacting perm gen  total 12288K, used 9716K [0x32a30000, 0x33630000, 0x36a30000)
+   the space 12288K,  79% used [0x32a30000, 0x333ad238, 0x333ad400, 0x33630000)
+    ro space 10240K,  44% used [0x36a30000, 0x36ea7e30, 0x36ea8000, 0x37430000)
+    rw space 12288K,  52% used [0x37430000, 0x37a7eb58, 0x37a7ec00, 0x38030000)
+}
+Event: 3.814 GC heap before
+{Heap before GC invocations=3 (full 0):
+ def new generation   total 4928K, used 4928K [0x13630000, 0x13b80000, 0x1dcd0000)
+  eden space 4416K, 100% used [0x13630000, 0x13a80000, 0x13a80000)
+  from space 512K, 100% used [0x13b00000, 0x13b80000, 0x13b80000)
+  to   space 512K,   0% used [0x13a80000, 0x13a80000, 0x13b00000)
+ tenured generation   total 10944K, used 4072K [0x1dcd0000, 0x1e780000, 0x32a30000)
+   the space 10944K,  37% used [0x1dcd0000, 0x1e0ca0a8, 0x1e0ca200, 0x1e780000)
+ compacting perm gen  total 12288K, used 10162K [0x32a30000, 0x33630000, 0x36a30000)
+   the space 12288K,  82% used [0x32a30000, 0x3341ca30, 0x3341cc00, 0x33630000)
+    ro space 10240K,  44% used [0x36a30000, 0x36ea7e30, 0x36ea8000, 0x37430000)
+    rw space 12288K,  52% used [0x37430000, 0x37a7eb58, 0x37a7ec00, 0x38030000)
+Event: 3.855 GC heap after
+Heap after GC invocations=4 (full 0):
+ def new generation   total 4928K, used 512K [0x13630000, 0x13b80000, 0x1dcd0000)
+  eden space 4416K,   0% used [0x13630000, 0x13630000, 0x13a80000)
+  from space 512K, 100% used [0x13a80000, 0x13b00000, 0x13b00000)
+  to   space 512K,   0% used [0x13b00000, 0x13b00000, 0x13b80000)
+ tenured generation   total 10944K, used 5435K [0x1dcd0000, 0x1e780000, 0x32a30000)
+   the space 10944K,  49% used [0x1dcd0000, 0x1e21ef88, 0x1e21f000, 0x1e780000)
+ compacting perm gen  total 12288K, used 10162K [0x32a30000, 0x33630000, 0x36a30000)
+   the space 12288K,  82% used [0x32a30000, 0x3341ca30, 0x3341cc00, 0x33630000)
+    ro space 10240K,  44% used [0x36a30000, 0x36ea7e30, 0x36ea8000, 0x37430000)
+    rw space 12288K,  52% used [0x37430000, 0x37a7eb58, 0x37a7ec00, 0x38030000)
+}
+Event: 4.413 GC heap before
+{Heap before GC invocations=4 (full 0):
+ def new generation   total 4928K, used 4928K [0x13630000, 0x13b80000, 0x1dcd0000)
+  eden space 4416K, 100% used [0x13630000, 0x13a80000, 0x13a80000)
+  from space 512K, 100% used [0x13a80000, 0x13b00000, 0x13b00000)
+  to   space 512K,   0% used [0x13b00000, 0x13b00000, 0x13b80000)
+ tenured generation   total 10944K, used 5435K [0x1dcd0000, 0x1e780000, 0x32a30000)
+   the space 10944K,  49% used [0x1dcd0000, 0x1e21ef88, 0x1e21f000, 0x1e780000)
+ compacting perm gen  total 12288K, used 11511K [0x32a30000, 0x33630000, 0x36a30000)
+   the space 12288K,  93% used [0x32a30000, 0x3356dc40, 0x3356de00, 0x33630000)
+    ro space 10240K,  44% used [0x36a30000, 0x36ea7e30, 0x36ea8000, 0x37430000)
+    rw space 12288K,  52% used [0x37430000, 0x37a7eb58, 0x37a7ec00, 0x38030000)
+Event: 4.454 GC heap after
+Heap after GC invocations=5 (full 0):
+ def new generation   total 4928K, used 512K [0x13630000, 0x13b80000, 0x1dcd0000)
+  eden space 4416K,   0% used [0x13630000, 0x13630000, 0x13a80000)
+  from space 512K, 100% used [0x13b00000, 0x13b80000, 0x13b80000)
+  to   space 512K,   0% used [0x13a80000, 0x13a80000, 0x13b00000)
+ tenured generation   total 10944K, used 7084K [0x1dcd0000, 0x1e780000, 0x32a30000)
+   the space 10944K,  64% used [0x1dcd0000, 0x1e3bb258, 0x1e3bb400, 0x1e780000)
+ compacting perm gen  total 12288K, used 11511K [0x32a30000, 0x33630000, 0x36a30000)
+   the space 12288K,  93% used [0x32a30000, 0x3356dc40, 0x3356de00, 0x33630000)
+    ro space 10240K,  44% used [0x36a30000, 0x36ea7e30, 0x36ea8000, 0x37430000)
+    rw space 12288K,  52% used [0x37430000, 0x37a7eb58, 0x37a7ec00, 0x38030000)
+}
+Event: 5.150 GC heap before
+{Heap before GC invocations=5 (full 0):
+ def new generation   total 4928K, used 4928K [0x13630000, 0x13b80000, 0x1dcd0000)
+  eden space 4416K, 100% used [0x13630000, 0x13a80000, 0x13a80000)
+  from space 512K, 100% used [0x13b00000, 0x13b80000, 0x13b80000)
+  to   space 512K,   0% used [0x13a80000, 0x13a80000, 0x13b00000)
+ tenured generation   total 10944K, used 7084K [0x1dcd0000, 0x1e780000, 0x32a30000)
+   the space 10944K,  64% used [0x1dcd0000, 0x1e3bb258, 0x1e3bb400, 0x1e780000)
+ compacting perm gen  total 12288K, used 12265K [0x32a30000, 0x33630000, 0x36a30000)
+   the space 12288K,  99% used [0x32a30000, 0x3362a6f0, 0x3362a800, 0x33630000)
+    ro space 10240K,  44% used [0x36a30000, 0x36ea7e30, 0x36ea8000, 0x37430000)
+    rw space 12288K,  52% used [0x37430000, 0x37a7eb58, 0x37a7ec00, 0x38030000)
+Event: 5.174 GC heap after
+Heap after GC invocations=6 (full 0):
+ def new generation   total 4928K, used 512K [0x13630000, 0x13b80000, 0x1dcd0000)
+  eden space 4416K,   0% used [0x13630000, 0x13630000, 0x13a80000)
+  from space 512K, 100% used [0x13a80000, 0x13b00000, 0x13b00000)
+  to   space 512K,   0% used [0x13b00000, 0x13b00000, 0x13b80000)
+ tenured generation   total 10944K, used 7674K [0x1dcd0000, 0x1e780000, 0x32a30000)
+   the space 10944K,  70% used [0x1dcd0000, 0x1e44e9a0, 0x1e44ea00, 0x1e780000)
+ compacting perm gen  total 12288K, used 12265K [0x32a30000, 0x33630000, 0x36a30000)
+   the space 12288K,  99% used [0x32a30000, 0x3362a6f0, 0x3362a800, 0x33630000)
+    ro space 10240K,  44% used [0x36a30000, 0x36ea7e30, 0x36ea8000, 0x37430000)
+    rw space 12288K,  52% used [0x37430000, 0x37a7eb58, 0x37a7ec00, 0x38030000)
+}
+
+Deoptimization events (0 events):
+No events
+
+Internal exceptions (10 events):
+Event: 5.419 Thread 0x00a1a800 Threw 0x13752110 at C:\re\jdk7u51\527\hotspot\src\share\vm\classfile\systemDictionary.cpp:185
+Event: 5.421 Thread 0x00a1a800 Threw 0x13753778 at C:\re\jdk7u51\527\hotspot\src\share\vm\classfile\systemDictionary.cpp:185
+Event: 5.422 Thread 0x00a1a800 Threw 0x13754a30 at C:\re\jdk7u51\527\hotspot\src\share\vm\classfile\systemDictionary.cpp:185
+Event: 5.475 Thread 0x00a1a800 Threw 0x137705f0 at C:\re\jdk7u51\527\hotspot\src\share\vm\classfile\systemDictionary.cpp:185
+Event: 5.599 Thread 0x04333000 Threw 0x137c4038 at C:\re\jdk7u51\527\hotspot\src\share\vm\prims\jvm.cpp:1244
+Event: 5.599 Thread 0x04333000 Threw 0x137c4ef8 at C:\re\jdk7u51\527\hotspot\src\share\vm\prims\jvm.cpp:1244
+Event: 5.900 Thread 0x0410fc00 Threw 0x1393a968 at C:\re\jdk7u51\527\hotspot\src\share\vm\prims\jvm.cpp:1244
+Event: 5.900 Thread 0x0410fc00 Threw 0x1393b818 at C:\re\jdk7u51\527\hotspot\src\share\vm\prims\jvm.cpp:1244
+Event: 5.905 Thread 0x0410fc00 Threw 0x1395c2f0 at C:\re\jdk7u51\527\hotspot\src\share\vm\prims\jvm.cpp:1244
+Event: 5.905 Thread 0x0410fc00 Threw 0x1395d1f8 at C:\re\jdk7u51\527\hotspot\src\share\vm\prims\jvm.cpp:1244
+
+Events (10 events):
+Event: 5.895 loading class 0x04104898
+Event: 5.895 loading class 0x04104898 done
+Event: 5.895 loading class 0x04104928
+Event: 5.895 loading class 0x04104928 done
+Event: 5.896 loading class 0x041048d8
+Event: 5.896 loading class 0x041048d8 done
+Event: 5.900 loading class 0x0413f7b8
+Event: 5.900 loading class 0x0413f7b8 done
+Event: 5.905 loading class 0x03ffdae8
+Event: 5.905 loading class 0x03ffdae8 done
+
+
+Dynamic libraries:
+0x00400000 - 0x004ac000 	c:\jruby-1.7.11\bin\jruby.exe
+0x7c900000 - 0x7c9b2000 	C:\WINDOWS\system32\ntdll.dll
+0x7c800000 - 0x7c8f6000 	C:\WINDOWS\system32\KERNEL32.dll
+0x62000000 - 0x620ba000 	C:\Program Files\Bitdefender\Antivirus Free Edition\avc3\avc3_sig_231\avcuf32.dll
+0x77dd0000 - 0x77e6b000 	C:\WINDOWS\system32\ADVAPI32.DLL
+0x77e70000 - 0x77f03000 	C:\WINDOWS\system32\RPCRT4.dll
+0x77fe0000 - 0x77ff1000 	C:\WINDOWS\system32\Secur32.dll
+0x77c10000 - 0x77c68000 	C:\WINDOWS\system32\msvcrt.dll
+0x7e410000 - 0x7e4a1000 	C:\WINDOWS\system32\USER32.dll
+0x77f10000 - 0x77f59000 	C:\WINDOWS\system32\GDI32.dll
+0x76390000 - 0x763ad000 	C:\WINDOWS\system32\IMM32.DLL
+0x00ac0000 - 0x00acb000 	c:\github\My_Ruby_TFT\ANSI32.dll
+0x684c0000 - 0x6857d000 	c:\jruby-1.7.11\bin\jruby.dll
+0x71ab0000 - 0x71ac7000 	C:\WINDOWS\system32\WS2_32.dll
+0x71aa0000 - 0x71aa8000 	C:\WINDOWS\system32\WS2HELP.dll
+0x6e8a0000 - 0x6ec20000 	C:\Java\jdk1.7.0_51\jre\bin\client\jvm.dll
+0x71ad0000 - 0x71ad9000 	C:\WINDOWS\system32\WSOCK32.dll
+0x76b40000 - 0x76b6d000 	C:\WINDOWS\system32\WINMM.dll
+0x76bf0000 - 0x76bfb000 	C:\WINDOWS\system32\PSAPI.DLL
+0x78aa0000 - 0x78b5f000 	C:\Java\jdk1.7.0_51\jre\bin\MSVCR100.dll
+0x6e7f0000 - 0x6e7fc000 	C:\Java\jdk1.7.0_51\jre\bin\verify.dll
+0x6d590000 - 0x6d5b0000 	C:\Java\jdk1.7.0_51\jre\bin\java.dll
+0x6e880000 - 0x6e893000 	C:\Java\jdk1.7.0_51\jre\bin\zip.dll
+0x6e5c0000 - 0x6e5d4000 	C:\Java\jdk1.7.0_51\jre\bin\net.dll
+0x68000000 - 0x68036000 	C:\WINDOWS\system32\rsaenh.dll
+0x769c0000 - 0x76a74000 	C:\WINDOWS\system32\USERENV.dll
+0x5b860000 - 0x5b8b5000 	C:\WINDOWS\system32\netapi32.dll
+0x71a50000 - 0x71a8f000 	C:\WINDOWS\System32\mswsock.dll
+0x76f20000 - 0x76f47000 	C:\WINDOWS\system32\DNSAPI.dll
+0x76d60000 - 0x76d79000 	C:\WINDOWS\system32\iphlpapi.dll
+0x76fb0000 - 0x76fb8000 	C:\WINDOWS\System32\winrnr.dll
+0x76f60000 - 0x76f8c000 	C:\WINDOWS\system32\WLDAP32.dll
+0x76fc0000 - 0x76fc6000 	C:\WINDOWS\system32\rasadhlp.dll
+0x6e5e0000 - 0x6e5ef000 	C:\Java\jdk1.7.0_51\jre\bin\nio.dll
+0x6e4c0000 - 0x6e4db000 	C:\Documents and Settings\Owner\Local Settings\Temp\jffi7586195733446923809.tmp
+0x6b200000 - 0x6b216000 	c:\github\sofa_adaptations_in_Ruby\lib\cal2jd.so
+0x59a60000 - 0x59b01000 	C:\WINDOWS\system32\dbghelp.dll
+0x77c00000 - 0x77c08000 	C:\WINDOWS\system32\VERSION.dll
+
+VM Arguments:
+jvm_args: -Djdk.home=C:\Java\jdk1.7.0_51 -Djruby.home=c:\jruby-1.7.11 -Djruby.script=jruby -Djruby.shell=cmd.exe -Djffi.boot.library.path=c:\jruby-1.7.11\lib\native;c:\jruby-1.7.11\lib\native\i386-Windows;c:\jruby-1.7.11\lib\native\x86_64-Windows -Xmx500m -Xss2048k -Xbootclasspath/a:c:\jruby-1.7.11\lib\jruby.jar -Djruby.cext.enabled=true 
+java_command: org.jruby.Main
+Launcher Type: generic
+
+Environment Variables:
+JAVA_HOME=C:\Java\jdk1.7.0_51
+PATH=c:\Documents and Settings\Owner\bin;.;C:\Git\local\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;C:\Git\bin;C:\Git\mingw\bin;c:\Python33\;c:\WINDOWS\system32;c:\WINDOWS;c:\WINDOWS\System32\Wbem;c:\Program Files\Heroku\bin;c:\Program Files\git\cmd;c:\jruby-1.7.11\bin;c:\ant\bin;c:\maven\bin;c:\Java\jdk1.7.0_51\bin;C:\Git\bin;c:\DevKit\mingw\bin;c:\DevKit\bin
+USERNAME=Owner
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=x86 Family 6 Model 8 Stepping 0, AuthenticAMD
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows XP Build 2600 Service Pack 3
+
+CPU:total 1 (1 cores per cpu, 1 threads per core) family 6 model 8 stepping 0, cmov, cx8, fxsr, mmx, sse, mmxext, 3dnowpref, tsc
+
+Memory: 4k page, physical 1048048k(146556k free), swap 2520508k(1691644k free)
+
+vm_info: Java HotSpot(TM) Client VM (24.51-b03) for windows-x86 JRE (1.7.0_51-b13), built on Dec 18 2013 19:09:58 by "java_re" with unknown MS VC++:1600
+
+time: Mon Apr 07 22:36:17 2014
+elapsed time: 6 seconds
+

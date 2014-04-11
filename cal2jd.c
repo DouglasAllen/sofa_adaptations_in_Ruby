@@ -1,4 +1,3 @@
-=begin
 #include "sofa.h"
 
 int iauCal2jd(int iy, int im, int id, double *djm0, double *djm)
@@ -187,169 +186,30 @@ int iauCal2jd(int iy, int im, int id, double *djm0, double *djm)
 **                 United Kingdom
 **
 **--------------------------------------------------------------------*/
-} 
-=end
-##   A Ruby adaptation of this algorithm included in a class for Calendars.
-# **  Gregorian Calendar to Julian Date.
-# **  Given:
-# **     iy,im,id  int     year, month, day in Gregorian calendar (Note 1)
-# **
-# **  Returned:
-# **     djm0      double  MJD zero-point: always 2400000.5
-# **     djm       double  Modified Julian Date for 0 hrs
-# **
-# **  Returned (function value):
-# **               int     status:
-# **                           0 = OK
-# **                          -1 = bad year   (Note 3: JD not computed)
-# **                          -2 = bad month  (JD not computed)
-# **                          -3 = bad day    (JD computed)
-class Calendars
+}
 
-  # /* Earliest year allowed (4800BC) */
-  IYMIN = -4799
-  DJM0  = 2400000.5
-  attr_accessor :djm0, :djm
+// int iauCal2jd(int iy, int im, int id, double *djm0, double *djm)
+#include <stdio.h>
+int
+main()
+{
+  int y = 2003, m = 6, d = 1;
+  int j;
+  double djm0, djm;
+  double *pdjm0 = &djm0;
+  double *pdjm  = &djm;  
+
+  printf("values are: y == %d, m == %d, d == %d\n", y, m, d);
+    
+  j = iauCal2jd(y, m, d, &djm0, &djm);   
   
-  def cal2jd( y = nil, m = nil, d = nil, djm0 = nil, djm = nil )
-    # int j, ly, my
-    # long ypmy    
-
-    # Preset djm0 to DJM0 constant
-    @djm0 = DJM0    
-    
-    # /* Month lengths in days */
-    mtab = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ]
-
-    # /* Preset status. */
-    j = 0
-    
-    # /* Validate year and month. */
-    if ( y == nil )
-      return -1
-    elsif ( y < IYMIN )
-      return -1
-    end
-    
-    if ( m == nil )
-      return -2
-    elsif ( m < 1 || m > 12 )
-      return -2
-    end
-    
-    # /* If February in a leap year, 1, otherwise 0. */
-    ( m == 2 ) && !( y % 4 ) && ( y % 100 || !( y % 400 )) ? ly = 0 : ly = 1
-    
-    # /* Validate day, taking into account leap years. */
-    if ( d == nil )
-      return -3
-    elsif (( d < 1 ) || ( d > ( mtab[ m-1 ] + ly )))
-      return -3
-    end
-    
-    # /* Return result. */
-    my = ( m - 14 ) / 12
-    ypmy = Integer( y + my )    
-    @djm = ( 1461 * ( ypmy + 4800 )) / 4 +
-           ( 367 * Integer( m - 2 - 12 * my )) / 12 -
-           ( 3 * (( ypmy + 4900 ) / 100 )) / 4 +
-           Integer( d - 2432076 )
-    j
-  end 
-end  
-
-if __FILE__ == $PROGRAM_NAME
-
-  gem 'minitest'
-  require 'minitest/autorun'
+  printf("j == %d\n", j);
+  printf("address of &djm0 == %p, size of pointer == %d\n", &djm0, sizeof(*pdjm0));
+  printf("address of &djm  == %p, size of pointer == %d\n", &djm, sizeof(*pdjm0));
+  printf("value from &djm0 == %.20g, size of djm0 == %d\n", *pdjm0, sizeof(djm0));
+  printf("value from &djm  == %.20g, size of djm  == %d\n", *pdjm, sizeof(djm));
+  printf("value from &djm0 == %.3f\n", (float)*pdjm0);
+  printf("value from &djm  == %.3f\n", (float)*pdjm);
   
-  describe 'Get an instance of the Calendars class' do
-    cal = Calendars.new
-    it 'is Calendars class returned by the new method?' do
-      assert_equal Calendars, cal.class
-    end
-  end
-  
-  describe 'check status' do  
-    it 'is -1, -2, -3 status returned by cal.cal2jd()' do
-      y, m, d = 0, 0, 0          
-      cal = Calendars.new
-      # check all the nils combos
-      
-      # check nil years
-      assert_equal -1, cal.cal2jd()
-      assert_equal 2400000.5, cal.djm0
-      assert_equal -1, cal.cal2jd(nil)
-      assert_equal 2400000.5, cal.djm0
-      assert_equal -1, cal.cal2jd(nil, m)
-      assert_equal 2400000.5, cal.djm0
-      assert_equal -1, cal.cal2jd(nil, nil)
-      assert_equal 2400000.5, cal.djm0
-      assert_equal -1, cal.cal2jd(nil, m, nil)
-      assert_equal 2400000.5, cal.djm0
-      assert_equal -1, cal.cal2jd(nil, nil, d)
-      assert_equal 2400000.5, cal.djm0      
-      assert_equal -1, cal.cal2jd(nil, nil, nil)
-      assert_equal 2400000.5, cal.djm0
-      
-      # check bad years
-      assert_equal -1, cal.cal2jd(-4800, nil, nil)
-      assert_equal 2400000.5, cal.djm0
-      assert_equal -1, cal.cal2jd(-4800, m, d)
-      assert_equal 2400000.5, cal.djm0
-      
-      # check min year
-      assert_equal -2, cal.cal2jd(-4799, m, d)
-      assert_equal 2400000.5, cal.djm0
-      
-      # check month nils, below min, above max
-      assert_equal -2, cal.cal2jd(y)
-      assert_equal 2400000.5, cal.djm0
-      assert_equal -2, cal.cal2jd(y, nil)
-      assert_equal 2400000.5, cal.djm0
-      assert_equal -2, cal.cal2jd(y, nil, d)
-      assert_equal 2400000.5, cal.djm0
-      assert_equal -2, cal.cal2jd(y, m, nil)
-      assert_equal 2400000.5, cal.djm0
-      assert_equal -2, cal.cal2jd(y, m, d)
-      assert_equal 2400000.5, cal.djm0      
-      assert_equal -2, cal.cal2jd(y, 13)
-      assert_equal 2400000.5, cal.djm0
-      assert_equal -2, cal.cal2jd(y, 13, d)
-      assert_equal 2400000.5, cal.djm0
-      assert_equal -2, cal.cal2jd(y, 13, nil)
-      assert_equal 2400000.5, cal.djm0
-      
-      # check day nils, below min, above max
-      assert_equal -3, cal.cal2jd(y, 2)
-      assert_equal 2400000.5, cal.djm0
-      assert_equal -3, cal.cal2jd(y, 2, nil)
-      assert_equal 2400000.5, cal.djm0
-      assert_equal -3, cal.cal2jd(y, 2, d)
-      assert_equal 2400000.5, cal.djm0
-      assert_equal -3, cal.cal2jd(y, 2, 32)
-      assert_equal 2400000.5, cal.djm0
-      
-      # check leap year day
-      assert_equal 0, cal.cal2jd(y, 2, 29)
-      assert_equal 2400000.5, cal.djm0
-      
-      # use a couple of good dates
-      assert_equal 0, cal.cal2jd(1996, 2, 10)
-      assert_equal 2400000.5, cal.djm0
-      assert_equal 0, cal.cal2jd(-2, 9, 21)
-      assert_equal 2400000.5, cal.djm0
-    end
-  end  
-  
-  describe 'compare results with Ruby Date methods' do  
-    it 'is Date.parse("#{yyyy}-#{mm}-#{dd}").jd returned by cal2jd(yyyy, mm, dd)' do
-      y, m, d = 1996, 2, 10
-      cal = Calendars.new
-      cal.cal2jd(y,m,d)
-      require 'date'
-      ajd = Date.parse("#{y}-#{m}-#{d}").ajd      
-      assert_equal ajd, cal.djm0 + cal.djm
-    end    
-  end
-end
+  return 0;
+}
