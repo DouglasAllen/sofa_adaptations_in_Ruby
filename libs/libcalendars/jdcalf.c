@@ -1,12 +1,13 @@
 #include "sofa.h"
 
-int iauCal2jd(int iy, int im, int id, double *djm0, double *djm)
+int iauJdcalf(int ndp, double dj1, double dj2, int iymdf[4])
 /*
 **  - - - - - - - - - -
-**   i a u C a l 2 j d
+**   i a u J d c a l f
 **  - - - - - - - - - -
 **
-**  Gregorian Calendar to Julian Date.
+**  Julian Date to Gregorian Calendar, expressed in a form convenient
+**  for formatting messages:  rounded to a specified precision.
 **
 **  This function is part of the International Astronomical Union's
 **  SOFA (Standards Of Fundamental Astronomy) software collection.
@@ -14,33 +15,44 @@ int iauCal2jd(int iy, int im, int id, double *djm0, double *djm)
 **  Status:  support function.
 **
 **  Given:
-**     iy,im,id  int     year, month, day in Gregorian calendar (Note 1)
+**     ndp       int      number of decimal places of days in fraction
+**     dj1,dj2   double   dj1+dj2 = Julian Date (Note 1)
 **
 **  Returned:
-**     djm0      double  MJD zero-point: always 2400000.5
-**     djm       double  Modified Julian Date for 0 hrs
+**     iymdf     int[4]   year, month, day, fraction in Gregorian
+**                        calendar
 **
 **  Returned (function value):
-**               int     status:
+**               int      status:
+**                          -1 = date out of range
 **                           0 = OK
-**                          -1 = bad year   (Note 3: JD not computed)
-**                          -2 = bad month  (JD not computed)
-**                          -3 = bad day    (JD computed)
+**                          +1 = NDP not 0-9 (interpreted as 0)
 **
 **  Notes:
 **
-**  1) The algorithm used is valid from -4800 March 1, but this
-**     implementation rejects dates before -4799 January 1.
+**  1) The Julian Date is apportioned in any convenient way between
+**     the arguments dj1 and dj2.  For example, JD=2450123.7 could
+**     be expressed in any of these ways, among others:
 **
-**  2) The Julian Date is returned in two pieces, in the usual SOFA
-**     manner, which is designed to preserve time resolution.  The
-**     Julian Date is available as a single number by adding djm0 and
-**     djm.
+**             dj1            dj2
 **
-**  3) In early eras the conversion is from the "Proleptic Gregorian
+**         2450123.7           0.0       (JD method)
+**         2451545.0       -1421.3       (J2000 method)
+**         2400000.5       50123.2       (MJD method)
+**         2450123.5           0.2       (date & time method)
+**
+**  2) In early eras the conversion is from the "Proleptic Gregorian
 **     Calendar";  no account is taken of the date(s) of adoption of
 **     the Gregorian Calendar, nor is the AD/BC numbering convention
 **     observed.
+**
+**  3) Refer to the function iauJd2cal.
+**
+**  4) NDP should be 4 or less if internal overflows are to be
+**     avoided on machines which use 16-bit integers.
+**
+**  Called:
+**     iauJd2cal    JD to Gregorian calendar
 **
 **  Reference:
 **
@@ -48,47 +60,57 @@ int iauCal2jd(int iy, int im, int id, double *djm0, double *djm)
 **     P. Kenneth Seidelmann (ed), University Science Books (1992),
 **     Section 12.92 (p604).
 **
-**  This revision:  2013 August 7
+**  This revision:  2013 June 18
 **
 **  SOFA release 2013-12-02
 **
 **  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
 */
 {
-   int j, ly, my;
-   long iypmy;
-
-/* Earliest year allowed (4800BC) */
-   const int IYMIN = -4799;
-
-/* Month lengths in days */
-   static const int mtab[]
-                     = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+   int j, js;
+   double denom, d1, d2, f1, f2, f;
 
 
-/* Preset status. */
-   j = 0;
+/* Denominator of fraction (e.g. 100 for 2 decimal places). */
+   if ((ndp >= 0) && (ndp <= 9)) {
+      j = 0;
+      denom = pow(10.0, ndp);
+   } else {
+      j = 1;
+      denom = 1.0;
+   }
 
-/* Validate year and month. */
-   if (iy < IYMIN) return -1;
-   if (im < 1 || im > 12) return -2;
+/* Copy the date, big then small, and realign to midnight. */
+   if (dj1 >= dj2) {
+      d1 = dj1;
+      d2 = dj2;
+   } else {
+      d1 = dj2;
+      d2 = dj1;
+   }
+   d2 -= 0.5;
 
-/* If February in a leap year, 1, otherwise 0. */
-   ly = ((im == 2) && !(iy%4) && (iy%100 || !(iy%400)));
+/* Separate days and fractions. */
+   f1 = fmod(d1, 1.0);
+   f2 = fmod(d2, 1.0);
+   d1 = floor(d1 - f1);
+   d2 = floor(d2 - f2);
 
-/* Validate day, taking into account leap years. */
-   if ( (id < 1) || (id > (mtab[im-1] + ly))) j = -3;
+/* Round the total fraction to the specified number of places. */
+   f = floor((f1+f2)*denom + 0.5) / denom;
 
-/* Return result. */
-   my = (im - 14) / 12;
-   iypmy = (long) (iy + my);
-   *djm0 = DJM0;
-   *djm = (double)((1461L * (iypmy + 4800L)) / 4L
-                 + (367L * (long) (im - 2 - 12 * my)) / 12L
-                 - (3L * ((iypmy + 4900L) / 100L)) / 4L
-                 + (long) id - 2432076L);
+/* Re-assemble the rounded date and re-align to noon. */
+   d2 += f + 0.5;
 
-/* Return status. */
+/* Convert to Gregorian calendar. */
+   js = iauJd2cal(d1, d2, &iymdf[0], &iymdf[1], &iymdf[2], &f);
+   if (js == 0) {
+      iymdf[3] = (int) (f * denom);
+   } else {
+      j = js;
+   }
+
+/* Return the status. */
    return j;
 
 /*----------------------------------------------------------------------
@@ -186,30 +208,4 @@ int iauCal2jd(int iy, int im, int id, double *djm0, double *djm)
 **                 United Kingdom
 **
 **--------------------------------------------------------------------*/
-}
-
-// int iauCal2jd(int iy, int im, int id, double *djm0, double *djm)
-#include <stdio.h>
-int
-main()
-{
-  int y = 2003, m = 6, d = 1;
-  int j;
-  double djm0, djm;
-  double *pdjm0 = &djm0;
-  double *pdjm  = &djm;  
-
-  printf("values are: y == %d, m == %d, d == %d\n", y, m, d);
-    
-  j = iauCal2jd(y, m, d, &djm0, &djm);   
-  
-  printf("j == %d\n", j);
-  printf("address of &djm0 == %p, size of pointer == %d\n", &djm0, sizeof(*pdjm0));
-  printf("address of &djm  == %p, size of pointer == %d\n", &djm, sizeof(*pdjm0));
-  printf("value from &djm0 == %.20g, size of djm0 == %d\n", *pdjm0, sizeof(djm0));
-  printf("value from &djm  == %.20g, size of djm  == %d\n", *pdjm, sizeof(djm));
-  printf("value from &djm0 == %.3f\n", (float)*pdjm0);
-  printf("value from &djm  == %.3f\n", (float)*pdjm);
-  
-  return 0;
 }

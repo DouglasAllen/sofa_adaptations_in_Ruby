@@ -1,13 +1,12 @@
 #include "sofa.h"
 
-int iauJd2cal(double dj1, double dj2,
-              int *iy, int *im, int *id, double *fd)
+int iauCal2jd(int iy, int im, int id, double *djm0, double *djm)
 /*
 **  - - - - - - - - - -
-**   i a u J d 2 c a l
+**   i a u C a l 2 j d
 **  - - - - - - - - - -
 **
-**  Julian Date to Gregorian year, month, day, and fraction of a day.
+**  Gregorian Calendar to Julian Date.
 **
 **  This function is part of the International Astronomical Union's
 **  SOFA (Standards Of Fundamental Astronomy) software collection.
@@ -15,38 +14,32 @@ int iauJd2cal(double dj1, double dj2,
 **  Status:  support function.
 **
 **  Given:
-**     dj1,dj2   double   Julian Date (Notes 1, 2)
+**     iy,im,id  int     year, month, day in Gregorian calendar (Note 1)
 **
-**  Returned (arguments):
-**     iy        int      year
-**     im        int      month
-**     id        int      day
-**     fd        double   fraction of day
+**  Returned:
+**     djm0      double  MJD zero-point: always 2400000.5
+**     djm       double  Modified Julian Date for 0 hrs
 **
 **  Returned (function value):
-**               int      status:
+**               int     status:
 **                           0 = OK
-**                          -1 = unacceptable date (Note 3)
+**                          -1 = bad year   (Note 3: JD not computed)
+**                          -2 = bad month  (JD not computed)
+**                          -3 = bad day    (JD computed)
 **
 **  Notes:
 **
-**  1) The earliest valid date is -68569.5 (-4900 March 1).  The
-**     largest value accepted is 1e9.
+**  1) The algorithm used is valid from -4800 March 1, but this
+**     implementation rejects dates before -4799 January 1.
 **
-**  2) The Julian Date is apportioned in any convenient way between
-**     the arguments dj1 and dj2.  For example, JD=2450123.7 could
-**     be expressed in any of these ways, among others:
+**  2) The Julian Date is returned in two pieces, in the usual SOFA
+**     manner, which is designed to preserve time resolution.  The
+**     Julian Date is available as a single number by adding djm0 and
+**     djm.
 **
-**            dj1             dj2
-**
-**         2450123.7           0.0       (JD method)
-**         2451545.0       -1421.3       (J2000 method)
-**         2400000.5       50123.2       (MJD method)
-**         2450123.5           0.2       (date & time method)
-**
-**  3) In early eras the conversion is from the "proleptic Gregorian
-**     calendar";  no account is taken of the date(s) of adoption of
-**     the Gregorian calendar, nor is the AD/BC numbering convention
+**  3) In early eras the conversion is from the "Proleptic Gregorian
+**     Calendar";  no account is taken of the date(s) of adoption of
+**     the Gregorian Calendar, nor is the AD/BC numbering convention
 **     observed.
 **
 **  Reference:
@@ -62,50 +55,41 @@ int iauJd2cal(double dj1, double dj2,
 **  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
 */
 {
-/* Minimum and maximum allowed JD */
-   const double DJMIN = -68569.5;
-   const double DJMAX = 1e9;
+   int j, ly, my;
+   long iypmy;
 
-   long jd, l, n, i, k;
-   double dj, d1, d2, f1, f2, f, d;
+/* Earliest year allowed (4800BC) */
+   const int IYMIN = -4799;
+
+/* Month lengths in days */
+   static const int mtab[]
+                     = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 
-/* Verify date is acceptable. */
-   dj = dj1 + dj2;
-   if (dj < DJMIN || dj > DJMAX) return -1;
+/* Preset status. */
+   j = 0;
 
-/* Copy the date, big then small, and re-align to midnight. */
-   if (dj1 >= dj2) {
-      d1 = dj1;
-      d2 = dj2;
-   } else {
-      d1 = dj2;
-      d2 = dj1;
-   }
-   d2 -= 0.5;
+/* Validate year and month. */
+   if (iy < IYMIN) return -1;
+   if (im < 1 || im > 12) return -2;
 
-/* Separate day and fraction. */
-   f1 = fmod(d1, 1.0);
-   f2 = fmod(d2, 1.0);
-   f = fmod(f1 + f2, 1.0);
-   if (f < 0.0) f += 1.0;
-   d = floor(d1 - f1) + floor(d2 - f2) + floor(f1 + f2 - f);
-   jd = (long) floor(d) + 1L;
+/* If February in a leap year, 1, otherwise 0. */
+   ly = ((im == 2) && !(iy%4) && (iy%100 || !(iy%400)));
 
-/* Express day in Gregorian calendar. */
-   l = jd + 68569L;
-   n = (4L * l) / 146097L;
-   l -= (146097L * n + 3L) / 4L;
-   i = (4000L * (l + 1L)) / 1461001L;
-   l -= (1461L * i) / 4L - 31L;
-   k = (80L * l) / 2447L;
-   *id = (int) (l - (2447L * k) / 80L);
-   l = k / 11L;
-   *im = (int) (k + 2L - 12L * l);
-   *iy = (int) (100L * (n - 49L) + i + l);
-   *fd = f;
+/* Validate day, taking into account leap years. */
+   if ( (id < 1) || (id > (mtab[im-1] + ly))) j = -3;
 
-   return 0;
+/* Return result. */
+   my = (im - 14) / 12;
+   iypmy = (long) (iy + my);
+   *djm0 = DJM0;
+   *djm = (double)((1461L * (iypmy + 4800L)) / 4L
+                 + (367L * (long) (im - 2 - 12 * my)) / 12L
+                 - (3L * ((iypmy + 4900L) / 100L)) / 4L
+                 + (long) id - 2432076L);
+
+/* Return status. */
+   return j;
 
 /*----------------------------------------------------------------------
 **
@@ -203,34 +187,3 @@ int iauJd2cal(double dj1, double dj2,
 **
 **--------------------------------------------------------------------*/
 }
-// int iauJd2cal(double dj1, double dj2,
-              // int *iy, int *im, int *id, double *fd)
-// #include <stdio.h>
-// int
-// main()
-// {
-  // int iy, im, id;
-  // double fd;
-  // int j;
-  // double dj1 = 2400000.5;
-  // double dj2 = 50123.9999;
-  // int * iyptr, * imptr, * idptr;
-  // double * fdptr;
-  // iyptr = &iy;
-  // imptr = &im;
-  // idptr = &id;
-  // fdptr = &fd;  
-
-  // printf("values are: dj1 == %.3f, dj2 == %.6f\n", (float)dj1, (float)dj2);
-    
-  // j = iauJd2cal(dj1, dj2, &iy, &im, &id, &fd);   
-  
-  // printf("j == %d\n", j);  
-  // printf("value from &iy == %d\n", * iyptr);
-  // printf("value from &im == %d\n", * imptr);
-  // printf("value from &id == %d\n", * idptr);
-  // printf("value from &fd == %.6f\n", (float)* fdptr);
-  
-  // return 0;
-// }
-

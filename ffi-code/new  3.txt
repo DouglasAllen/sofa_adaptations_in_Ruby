@@ -1,5 +1,0 @@
-require 'ffi'
-
-module Calendars
-
-end

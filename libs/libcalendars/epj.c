@@ -1,12 +1,12 @@
 #include "sofa.h"
 
-int iauCal2jd(int iy, int im, int id, double *djm0, double *djm)
+double iauEpj(double dj1, double dj2)
 /*
-**  - - - - - - - - - -
-**   i a u C a l 2 j d
-**  - - - - - - - - - -
+**  - - - - - - -
+**   i a u E p j
+**  - - - - - - -
 **
-**  Gregorian Calendar to Julian Date.
+**  Julian Date to Julian Epoch.
 **
 **  This function is part of the International Astronomical Union's
 **  SOFA (Standards Of Fundamental Astronomy) software collection.
@@ -14,39 +14,22 @@ int iauCal2jd(int iy, int im, int id, double *djm0, double *djm)
 **  Status:  support function.
 **
 **  Given:
-**     iy,im,id  int     year, month, day in Gregorian calendar (Note 1)
-**
-**  Returned:
-**     djm0      double  MJD zero-point: always 2400000.5
-**     djm       double  Modified Julian Date for 0 hrs
+**     dj1,dj2    double     Julian Date (see note)
 **
 **  Returned (function value):
-**               int     status:
-**                           0 = OK
-**                          -1 = bad year   (Note 3: JD not computed)
-**                          -2 = bad month  (JD not computed)
-**                          -3 = bad day    (JD computed)
+**                double     Julian Epoch
 **
-**  Notes:
+**  Note:
 **
-**  1) The algorithm used is valid from -4800 March 1, but this
-**     implementation rejects dates before -4799 January 1.
-**
-**  2) The Julian Date is returned in two pieces, in the usual SOFA
+**     The Julian Date is supplied in two pieces, in the usual SOFA
 **     manner, which is designed to preserve time resolution.  The
-**     Julian Date is available as a single number by adding djm0 and
-**     djm.
-**
-**  3) In early eras the conversion is from the "Proleptic Gregorian
-**     Calendar";  no account is taken of the date(s) of adoption of
-**     the Gregorian Calendar, nor is the AD/BC numbering convention
-**     observed.
+**     Julian Date is available as a single number by adding dj1 and
+**     dj2.  The maximum resolution is achieved if dj1 is 2451545.0
+**     (J2000.0).
 **
 **  Reference:
 **
-**     Explanatory Supplement to the Astronomical Almanac,
-**     P. Kenneth Seidelmann (ed), University Science Books (1992),
-**     Section 12.92 (p604).
+**     Lieske, J.H., 1979, Astron.Astrophys. 73, 282.
 **
 **  This revision:  2013 August 7
 **
@@ -55,41 +38,12 @@ int iauCal2jd(int iy, int im, int id, double *djm0, double *djm)
 **  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
 */
 {
-   int j, ly, my;
-   long iypmy;
-
-/* Earliest year allowed (4800BC) */
-   const int IYMIN = -4799;
-
-/* Month lengths in days */
-   static const int mtab[]
-                     = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+   double epj;
 
 
-/* Preset status. */
-   j = 0;
+   epj = 2000.0 + ((dj1 - DJ00) + dj2) / DJY;
 
-/* Validate year and month. */
-   if (iy < IYMIN) return -1;
-   if (im < 1 || im > 12) return -2;
-
-/* If February in a leap year, 1, otherwise 0. */
-   ly = ((im == 2) && !(iy%4) && (iy%100 || !(iy%400)));
-
-/* Validate day, taking into account leap years. */
-   if ( (id < 1) || (id > (mtab[im-1] + ly))) j = -3;
-
-/* Return result. */
-   my = (im - 14) / 12;
-   iypmy = (long) (iy + my);
-   *djm0 = DJM0;
-   *djm = (double)((1461L * (iypmy + 4800L)) / 4L
-                 + (367L * (long) (im - 2 - 12 * my)) / 12L
-                 - (3L * ((iypmy + 4900L) / 100L)) / 4L
-                 + (long) id - 2432076L);
-
-/* Return status. */
-   return j;
+   return epj;
 
 /*----------------------------------------------------------------------
 **
@@ -186,30 +140,4 @@ int iauCal2jd(int iy, int im, int id, double *djm0, double *djm)
 **                 United Kingdom
 **
 **--------------------------------------------------------------------*/
-}
-
-// int iauCal2jd(int iy, int im, int id, double *djm0, double *djm)
-#include <stdio.h>
-int
-main()
-{
-  int y = 2003, m = 6, d = 1;
-  int j;
-  double djm0, djm;
-  double *pdjm0 = &djm0;
-  double *pdjm  = &djm;  
-
-  printf("values are: y == %d, m == %d, d == %d\n", y, m, d);
-    
-  j = iauCal2jd(y, m, d, &djm0, &djm);   
-  
-  printf("j == %d\n", j);
-  printf("address of &djm0 == %p, size of pointer == %d\n", &djm0, sizeof(*pdjm0));
-  printf("address of &djm  == %p, size of pointer == %d\n", &djm, sizeof(*pdjm0));
-  printf("value from &djm0 == %.20g, size of djm0 == %d\n", *pdjm0, sizeof(djm0));
-  printf("value from &djm  == %.20g, size of djm  == %d\n", *pdjm, sizeof(djm));
-  printf("value from &djm0 == %.3f\n", (float)*pdjm0);
-  printf("value from &djm  == %.3f\n", (float)*pdjm);
-  
-  return 0;
 }
