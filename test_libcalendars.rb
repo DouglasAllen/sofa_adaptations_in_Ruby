@@ -18,7 +18,7 @@ module Calendars
   attach_function :iauEpj, [ :double, :double ], :double
   attach_function :iauEpj2jd, [ :double, :pointer, :pointer ], :void
   attach_function :iauJd2cal, [ :double, :double, :pointer, :pointer, :pointer, :pointer ], :int
-  # attach_function :iauJdcalf, [ :int, :double, :double, :int], :int
+  attach_function :iauJdcalf, [ :int, :double, :double, :pointer], :int
 end
 
 puts 1
@@ -26,20 +26,25 @@ mp1 = FFI::MemoryPointer.new(:double, 8)
 mp2 = FFI::MemoryPointer.new(:double, 8)
 p cal2jd = Calendars.iauCal2jd(y, m, d, mp1, mp2 )
 puts mp1.get_double, mp2.get_double
+
 puts 2
 p epb = Calendars.iauEpb(mp1.get_double, mp2.get_double)
+
 puts 3
 mp3 = FFI::MemoryPointer.new(:double, 8)
 mp4 = FFI::MemoryPointer.new(:double, 8)
 p Calendars.iauEpb2jd( epb, mp3, mp4 )
 puts mp3.get_double, mp4.get_double
+
 puts 4
 p epj = Calendars.iauEpj(mp3.get_double, mp4.get_double)
+
 puts 5
 mp5 = FFI::MemoryPointer.new(:double, 8)
 mp6 = FFI::MemoryPointer.new(:double, 8)
 p Calendars.iauEpj2jd( epj, mp5, mp6 )
 puts mp5.get_double, mp6.get_double
+
 puts 6
 mp7 = FFI::MemoryPointer.new(:int, 4)
 mp8 = FFI::MemoryPointer.new(:int, 4)
@@ -47,10 +52,11 @@ mp9 = FFI::MemoryPointer.new(:int, 4)
 mp10 = FFI::MemoryPointer.new(:double, 8)
 p jd2cal = Calendars.iauJd2cal( mp5.get_double, mp6.get_double, mp7, mp8, mp9, mp10 )
 puts mp7.get_int, mp8.get_int, mp9.get_int, mp10.get_double
+
 puts 7
-# p1 = FFI::Pointer.new(:uint8, 4)
-# ary = p1.read_array_of_type(:uint8, :get_uint8, 4)
-# p jdcalf = Calendars.iauJdcalf( 4, mp5.get_double, mp6.get_double, [4])
+mp11 = FFI::MemoryPointer.new(:int, 4)
+p jdcalf = Calendars.iauJdcalf( 6, mp5.get_double, mp6.get_double, mp11)
+p ary = mp11.read_array_of_type(:int, :get_int, 4)
 
 module RCalendars
   attr_accessor :jd1, :jd2 
