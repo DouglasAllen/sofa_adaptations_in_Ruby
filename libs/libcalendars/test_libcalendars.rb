@@ -5,8 +5,7 @@ y,m,d = Time.now.utc.year, Time.now.utc.month, Time.now.utc.day
 
 module Calendars
   extend FFI::Library
-  #ffi_lib "libcalendars.so"
-  ffi_lib "libsofa_c.so"
+  ffi_lib "../../lib/libsofa_c.so"
   # i = iauCal2jd ( iy, im, id, &djm0, &djm );
   # d = iauEpb ( dj1, dj2 );
   # iauEpb2jd ( epb, &djm0, &djm );
