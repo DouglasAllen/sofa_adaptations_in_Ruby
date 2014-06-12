@@ -17,6 +17,7 @@ int main() {
     printf("error or warning\n");
   } else{
     printf("Julian Days start at Noon and is %f\n", djm0 + djm + 0.5);
+		printf("Used only if fractional days are to be added %f\n", djm0 + djm);
   }
   //=> Julian Day is 2451545.000000
 }
