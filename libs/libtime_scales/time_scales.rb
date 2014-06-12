@@ -152,8 +152,8 @@ puts "Time_Scales.iauD2tf Decompose days to hours, minutes, seconds, fraction."
 days = 0.333
 void_status = Time_Scales.iauD2tf(ndp, days, mp8, mp1)
 ihmsf = mp1.read_array_of_type(:int, :get_int, 4)
-sing  = mp8.read_string
-puts "#{sing}#{ihmsf}"
+sign  = mp8.read_string
+puts "#{sign}#{ihmsf}"
 
 puts
 puts "Time_Scales.iauTttdb transforms Terrestrial Time, TT, to Barycentric Dynamical Time, TDB."
