@@ -1,59 +1,11 @@
+require 'era'
+require 'time_scales'
 require 'date'
-require 'ffi'
 
 y,m,d = Time.now.utc.year, Time.now.utc.month, Time.now.utc.day
 time_now  = DateTime.now.to_time.utc.to_datetime
 # ajd   = time_now.ajd.to_f
 ajd   = DateTime.new(1954, 12, 15, 14, 0, 0).to_time.utc.to_datetime.ajd.to_f
-
-module ERA
-  extend FFI::Library
-  ffi_lib "../../lib/libsofa_c.so"
-  
-  # double iauEra00(double dj1, double dj2)
-  attach_function :iauEra00, [:double, :double], :double
-  
-  # double iauGmst00(double uta, double utb, double tta, double ttb)
-  attach_function :iauGmst00, [:double, :double, :double, :double], :double
-  
-  # double iauGmst06(double uta, double utb, double tta, double ttb)
-  attach_function :iauGmst06, [:double, :double, :double, :double], :double 
-  
-  # double iauGmst82(double dj1, double dj2)
-  attach_function :iauGmst82, [:double, :double], :double
-  
-  # double iauGst00a(double uta, double utb, double tta, double ttb)
-  attach_function :iauGst00a, [:double, :double, :double, :double], :double
-  
-  # double iauGst00b(double uta, double utb)
-  attach_function :iauGst00b, [:double, :double], :double
-  
-  # double iauGst06(double uta, double utb, double tta, double ttb, double rnpb[3][3])
-  attach_function :iauGst06, [:double, :double, :double, :double, :double], :double
-  
-  # double iauGst06a(double uta, double utb, double tta, double ttb)
-  attach_function :iauGst06a, [:double, :double, :double, :double], :double 
-  
-  # double iauGst94(double uta, double utb)
-  attach_function :iauGst94, [:double, :double], :double  
-  
-  # void iauA2tf(int ndp, double angle, char *sign, int ihmsf[4])
-  attach_function :iauA2tf, [:int, :double, :pointer, :pointer], :void
-end
-module Time_Scales
-  extend FFI::Library
-  ffi_lib '../../lib/libsofa_c.so'
-  
-  attach_function :iauD2dtf, [:string, :int, :double, :double, :pointer, :pointer, :pointer, :pointer], :int
-  
-  attach_function :iauDtf2d, [:string, :int, :int, :int, :int, :int, :double, :pointer, :pointer], :int
-  
-  attach_function :iauUtctai, [:double, :double, :pointer, :pointer], :int
-  
-  attach_function :iauTaitt, [:double, :double, :pointer, :pointer], :int
-  
-  attach_function :iauUtcut1, [:double, :double, :double, :pointer, :pointer], :int
-end
 
 # set up pointers and data
 dut1   = -0.2860558

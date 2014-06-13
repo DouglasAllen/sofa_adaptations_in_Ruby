@@ -1,26 +1,8 @@
+require 'calendars'
 require 'date'
-require 'ffi'
 
 y,m,d = Time.now.utc.year, Time.now.utc.month, Time.now.utc.day
 
-module Calendars
-  extend FFI::Library
-  ffi_lib "../../lib/libsofa_c.so"
-  # i = iauCal2jd ( iy, im, id, &djm0, &djm );
-  # d = iauEpb ( dj1, dj2 );
-  # iauEpb2jd ( epb, &djm0, &djm );
-  # d = iauEpj ( dj1, dj2 );
-  # iauEpj2jd ( epj, &djm0, &djm );
-  # i = iauJd2cal ( dj1, dj2, &iy, &im, &id, &fd );
-  # i = iauJdcalf ( ndp, dj1, dj2, iymdf );
-  attach_function :iauCal2jd, [:int, :int, :int, :pointer, :pointer ], :int
-  attach_function :iauEpb, [:double, :double ], :double
-  attach_function :iauEpb2jd, [ :double, :pointer, :pointer ], :void
-  attach_function :iauEpj, [ :double, :double ], :double
-  attach_function :iauEpj2jd, [ :double, :pointer, :pointer ], :void
-  attach_function :iauJd2cal, [ :double, :double, :pointer, :pointer, :pointer, :pointer ], :int
-  attach_function :iauJdcalf, [ :int, :double, :double, :pointer], :int
-end
 puts
 puts "Gregorian Calendar to Julian Date"
 puts "input = #{y}, #{m}, #{d}"
