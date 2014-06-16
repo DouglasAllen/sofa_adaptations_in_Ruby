@@ -112,7 +112,11 @@ module Astrometry
                 # double phpa, double tc, double rh, double wl,
                 # double *aob, double *zob, double *hob,
                 # double *dob, double *rob, double *eo)
-								
+	attach_function :iauAtco13, [:double, :double, :double, :double, :double, :double, 
+	                             :double, :double, :double, :double, :double, :double,
+	                             :double, :double, :double, :double, :double, :double,
+															 :pointer, :pointer, :pointer,
+                               :pointer, :pointer, :pointer], :int							
 
 	# ATIC13 CIRS −> ICRS
 	# void iauAtic13(double ri, double di, double date1, double date2,
@@ -196,4 +200,8 @@ module Astrometry
   # void iauRefco(double phpa, double tc, double rh, double wl,
                 # double *refa, double *refb)
 								
+end
+
+if __FILE__ == $0
+
 end
