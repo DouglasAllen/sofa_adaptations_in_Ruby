@@ -1,3 +1,4 @@
+require 'angles'
 require 'era'
 require 'time_scales'
 require 'date'
@@ -38,37 +39,37 @@ ut11, ut12 = mp5.get_double, mp6.get_double
 
 # show sign and right ascension time
 def show_ta(ndp, type, sign_p, mp1)
-  ERA.iauA2tf(ndp, type, sign_p, mp1)
+  Angles.iauA2tf(ndp, type, sign_p, mp1)
   ta = mp1.read_array_of_type(:int, :get_int, 4)
   s = sign_p.read_string
-  "= #{s}#{ta[0]}:#{ta[1]}:#{ta[2]} fs#{(ta[3] * 0.001).round(3)}"
+  "#{s}#{ta[0]}:#{ta[1]}:#{ta[2]} fs#{(ta[3] * 0.001).round(3)}"
 end
 
 puts
 puts "Greenwich mean sidereal time (model consistent with IAU 2000 resolutions)."
 gmst = ERA.iauGmst00(ut11, ut12, tt1, tt2)
-p show_ta(ndp, gmst, sign_p, mp1)
+p "at #{DateTime.jd(ajd + 0.5)} gmst = #{show_ta(ndp, gmst, sign_p, mp1)}"
 
 puts
 puts "Greenwich mean sidereal time (model consistent with IAU 2006 precession)."
 gmst = ERA.iauGmst06(ut11, ut12, tt1, tt2)
-p show_ta(ndp, gmst, sign_p, mp1)  
+p "at #{DateTime.jd(ajd + 0.5)} gmst = #{show_ta(ndp, gmst, sign_p, mp1)}"  
 
 puts
 puts "Universal Time to Greenwich mean sidereal time (IAU 1982 model)."
 gmst = ERA.iauGmst82(utc1, utc2)
-p show_ta(ndp, gmst, sign_p, mp1) 
+p "at #{DateTime.jd(ajd + 0.5)} gmst = #{show_ta(ndp, gmst, sign_p, mp1)}" 
 
 puts
 puts "Greenwich apparent sidereal time (consistent with IAU 2000 resolutions)."
 gst = ERA.iauGst00a(ut11, ut12, tt1, tt2)
-p show_ta(ndp, gst, sign_p, mp1) 
+p "at #{DateTime.jd(ajd + 0.5)}  gst = #{show_ta(ndp, gst, sign_p, mp1)}" 
 
 puts
 puts "Greenwich apparent sidereal time (consistent with IAU 2000
 resolutions but using the truncated nutation model IAU 2000B)."
 gst = ERA.iauGst00b(ut11, ut12)
-p show_ta(ndp, gst, sign_p, mp1) 
+p "at #{DateTime.jd(ajd + 0.5)}  gst = #{show_ta(ndp, gst, sign_p, mp1)}" 
  
 # not ready
 # puts
@@ -80,22 +81,28 @@ p show_ta(ndp, gst, sign_p, mp1)
 puts
 puts "Greenwich apparent sidereal time (consistent with IAU 2000 and 2006 resolutions)."
 gst = ERA.iauGst06a(ut11, ut12, tt1, tt2)
-p show_ta(ndp, gst, sign_p, mp1)
+p "at #{DateTime.jd(ajd + 0.5)}  gst = #{show_ta(ndp, gst, sign_p, mp1)}"
 
 puts
 puts "Greenwich apparent sidereal time (consistent with IAU 1982/94 resolutions)."
 gmst = ERA.iauGst94(utc1, utc2)
-p show_ta(ndp, gmst, sign_p, mp1)  
+p "at #{DateTime.jd(ajd + 0.5)}  gst = #{show_ta(ndp, gmst, sign_p, mp1)}"  
 
 puts
 puts "Earth rotation angle (IAU 2000 model)."
 era = ERA.iauEra00(tt1, tt2)
-p show_ta(ndp, era, sign_p, mp1)
+p "at #{DateTime.jd(ajd + 0.5)}  era = #{show_ta(ndp, era, sign_p, mp1)}"
 
 puts
 lst = era - 1.548984947
-puts "My local sidereal time from ERA #{show_ta(ndp, lst, sign_p, mp1)}" 
+puts "at #{DateTime.jd(ajd + 0.5)} My local sidereal time from ERA = #{show_ta(ndp, lst, sign_p, mp1)}"
 
+puts
+# Arcturus ra = 14h 15m 39.7s dc = +19° 10′ 56″
+# 3.733528341608886757516216956124 ra rad
+# 0.3347929356270011757334510825243 dc rad 
+# 5.282513288608886757516216956124 era for my lng.
+p "f = #{ajd % 1.0}"
 # loop do
   # ajd   = DateTime.now.to_time.utc.to_datetime.ajd.to_f
   # status = Time_Scales.iauD2dtf(string, ndp, ajd, 0.0, mp1, mp2, mp3, mp4)

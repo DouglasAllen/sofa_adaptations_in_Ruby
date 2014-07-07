@@ -14,7 +14,7 @@ module Angles
 	
 	# AF2A degrees, arcminutes, arcseconds to radians
 	# int iauAf2a(char s, int ideg, int iamin, double asec, double *rad)
-	attach_function :, :int
+	attach_function :iauAf2a, [:string, :int, :int, :double, :double], :int
 	
 	# D2TF decompose days into hours, minutes, seconds
 	# void iauD2tf(int ndp, double days, char *sign, int ihmsf[4])

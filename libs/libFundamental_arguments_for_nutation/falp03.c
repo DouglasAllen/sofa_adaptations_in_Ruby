@@ -48,8 +48,8 @@ double iauFalp03(double t)
 
 /* Mean anomaly of the Sun (IERS Conventions 2003). */
    a = fmod(         1287104.793048 +
-             t * ( 129596581.0481 +
-             t * (       - 0.5532 +
+             t * ( 129596581.0481   +
+             t * (       - 0.5532   +
              t * (         0.000136 +
              t * (       - 0.00001149 ) ) ) ), TURNAS ) * DAS2R;
 
