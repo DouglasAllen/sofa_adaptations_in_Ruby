@@ -1,4 +1,4 @@
-require 'calendars'
+require './calendars'
 require 'date'
 
 y,m,d = Time.now.utc.year, Time.now.utc.month, Time.now.utc.day
