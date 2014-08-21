@@ -3,7 +3,7 @@ require 'ffi'
 
 module Calendars
   extend FFI::Library
-  ffi_lib './lib/libsofa_c.so'  
+  ffi_lib 'lib/libsofa_c.so'  
   
   # CAL2JD Gregorian calendar to Julian Day number
   # int iauCal2jd(int iy, int im, int id, double *djm0, double *djm)

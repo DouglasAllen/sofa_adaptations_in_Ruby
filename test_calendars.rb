@@ -10,7 +10,8 @@ mp1 = FFI::MemoryPointer.new(:double, 8)
 mp2 = FFI::MemoryPointer.new(:double, 8)
 cal2jd = Calendars.iauCal2jd(y, m, d, mp1, mp2 )
 puts "status = #{cal2jd}"
-puts "jd 1 = #{mp1.get_double}", "jd 2 = #{mp2.get_double}"
+puts "jd 1 = #{mp1.get_double}"
+puts "jd 2 = #{mp2.get_double}"
 puts "jd 1 + jd 2 = #{mp1.get_double + mp2.get_double}"
 
 puts

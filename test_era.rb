@@ -1,5 +1,5 @@
-require 'angles'
-require 'era'
+require './angles'
+require './era'
 require 'time_scales'
 require 'date'
 
